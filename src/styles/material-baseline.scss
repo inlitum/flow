@@ -1,0 +1,132 @@
+/*!
+ *     Licence:    (c) 2022 by N-Squared Software (NZ) Limited.
+ *                 All Rights Reserved.
+ *
+ *                 All information contained herein is, and remains
+ *                 the property of N-Squared Software (NZ) Limited.
+ *
+ *                 The intellectual and technical concepts contained herein are
+ *                 proprietary to N-Squared Software (NZ) Limited, and are
+ *                 protected by trade secret or copyright law.
+ *
+ *                 Dissemination of this information or reproduction of this
+ *                 material is strictly forbidden unless prior written permission
+ *                 is obtained from N-Squared Software (NZ) Limited.
+ */
+@use 'node_modules/@angular/material/index' as mat;
+@import 'node_modules/@angular/material/theming';
+
+@include mat.core();
+
+/*
+ * STEP 1
+ *
+ * Variables for our application. These are applied to the bootstrap and material SCSS
+ * configuration.
+ */
+$link-color                  : #FF5722; // same as the primary color for the material theme.
+$link-hover-color            : currentColor;
+$link-hover-decoration       : none;
+
+/*
+ * STEP 2
+ *
+ * We layer Angular material on top of bootstrap. This gives us a lot of typography features
+ * and the bootstrap grid system, while giving us form and navigation features from material.
+ * see https://www.amadousall.com/the-good-parts-of-bootstrap-4-you-are-missing-in-your-angular-material-projects/
+ * Imports functions, variables, and mixins that are needed by other Bootstrap files
+ */
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/utilities"; // for grid layout
+@import "bootstrap/scss/alert"; // for angular alerts
+@import 'node_modules/@angular/material/theming'; // The actual material theming
+
+/**
+ * STEP 3
+ * Define a custom typography config that overrides the basic font sizes
+ * because those are tooooooo big.
+ *
+ * This has to be before STEP 4
+ */
+$custom-typography           : mat.define-typography-config(
+        $body-1 : mat.define-typography-level(11px, 11px, 11px), // tables, and normal body text
+        $body-2 : mat.define-typography-level(11px, 11px, 800), // table headers
+        $button : mat.define-typography-level(12px, 12px, 12px),
+        $input  : mat.define-typography-level(11px, 1, 400)
+);
+
+/*
+ * STEP 4
+ *
+ * Include the common styles for Angular Material. We include this here so that you only
+ * have to load a single css file for Angular Material in your app.
+ * Be sure that you only ever include this mixin once!
+ */
+@include mat.core($custom-typography);
+
+/*
+ * STEP 5
+ *
+ * Define the palettes for your theme using the Material Design palettes available in palette.scss
+ * (imported above). For each palette, you can optionally specify a default, lighter, and darker
+ * hue. Available color palettes: https://material.io/design/color/
+ */
+
+$md-custom-orange            : (
+        50 : #F4EBE2,
+        100 : #E3CDB6,
+        200 : #D0AC86,
+        300 : #BD8A56,
+        400 : #AF7131,
+        500 : #A1580D,
+        600 : #99500B,
+        700 : #8F4709,
+        800 : #853D07,
+        900 : #742D03,
+        A100 : #FFBEA2,
+        A200 : #FF9A6F,
+        A400 : #FF763C,
+        A700 : #FF6423,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #000000,
+                400 : #FFFFFF,
+                500 : #FFFFFF,
+                600 : #FFFFFF,
+                700 : #FFFFFF,
+                800 : #FFFFFF,
+                900 : #FFFFFF,
+                A100 : #000000,
+                A200 : #000000,
+                A400 : #000000,
+                A700 : #000000,
+        )
+);
+
+// Define colour palettes for our highlight colours.
+$n2acd-admin-app-primary     : mat.define-palette($md-custom-orange);
+$n2acd-admin-app-accent      : mat.define-palette($md-custom-orange, A200, A100, A400);
+$n2acd-admin-app-warn        : mat.define-palette(mat.$red-palette);
+
+// Generate overarching theme colours palettes.
+$n2acd-admin-app-light-theme : mat.define-light-theme($n2acd-admin-app-primary, $n2acd-admin-app-accent, $n2acd-admin-app-warn);
+$n2acd-admin-app-dark-theme  : mat.define-dark-theme($n2acd-admin-app-primary, $n2acd-admin-app-accent, $n2acd-admin-app-warn);
+
+// Include the light theme by default. Can be overridden if the user chooses to do so.
+@include mat.all-component-themes($n2acd-admin-app-light-theme);
+
+// Export theme colours
+$primary                     : mat.get-color-from-palette($n2acd-admin-app-primary);
+$accent                      : mat.get-color-from-palette($n2acd-admin-app-accent);
+$warn                        : mat.get-color-from-palette($n2acd-admin-app-warn);
+
+// CSS binding that will invoke the dark theme if selected.
+.n2acd-dark-theme {
+    @include mat.all-component-themes($n2acd-admin-app-dark-theme)
+}
