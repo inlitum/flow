@@ -7,6 +7,7 @@ export abstract class FlowNode {
     // Abstract
 
     protected abstract nodeName: string;
+    protected customName: string | null = null;
 
     public abstract initFromConfig(config: {[key: string]: any}): void;
     public abstract storeToConfig(): {[key: string]: any };
@@ -17,6 +18,10 @@ export abstract class FlowNode {
         return this.nodeName;
     }
 
+    public getDisplayName (): string {
+        return this.customName ?? this.nodeName;
+    }
+
     public init() {
 
     };
@@ -24,7 +29,7 @@ export abstract class FlowNode {
     // Private
 }
 
-export abstract class Exits extends FlowNode{
+export abstract class ExitNode extends FlowNode{
 
     /**
      * The array from this can be either hard coded or dynamically set.
@@ -67,7 +72,7 @@ export abstract class Exits extends FlowNode{
     private _exits: {[exitName: string]: FlowNode | null} | null = null;
 }
 
-export abstract class DynamicExits extends Exits {
+export abstract class DynamicExitNode extends ExitNode {
     // Abstract
 
     protected abstract minimumExits: number;
@@ -90,12 +95,10 @@ export abstract class DynamicExits extends Exits {
         if (!this.canAddExit()) {
             return;
         }
-
-        this.exits
     }
 }
 
-export abstract class SplitExits extends Exits {
+export abstract class SplitExitNode extends ExitNode {
     /**
      *
      * ** Each entry should be greater than 1 **
@@ -131,7 +134,7 @@ export abstract class SplitExits extends Exits {
     }
 }
 
-export class Test extends SplitExits {
+export class Test extends SplitExitNode {
 
     getExitNames (): string[] {
         if (this.split) {
