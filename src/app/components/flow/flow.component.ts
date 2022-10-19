@@ -1,29 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { TestNode }          from '../../node-types/test-node';
-import { FlowNode }          from '../../node-base/flow-node';
-import { StartNode }         from '../../node-types/start-node';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FlowNode }                     from '../../node-base/flow-node';
+import { FlowService }                  from '../../services/flow.service';
+import { Subject, takeUntil }           from 'rxjs';
 
 @Component ({
     selector: 'app-flow',
     templateUrl: './flow.component.html'
 })
-export class FlowComponent implements OnInit {
+export class FlowComponent implements OnInit, OnDestroy {
 
-    public nodes: FlowNode[] = []
+    public nodes: FlowNode[] = [];
 
-    constructor () {
-        let testNode = new TestNode();
-        let startNode = new StartNode();
+    public onDestroy$: Subject<null> = new Subject<null> ();
 
-        startNode.setExit(testNode, 0);
-
-        testNode.setPosition({x: 200, y: 0})
-
-        this.nodes.push(testNode);
-        this.nodes.push(startNode);
+    constructor (
+        private _flowService: FlowService
+    ) {
     }
 
     ngOnInit (): void {
+        this._flowService.flowNodes$
+        .pipe (takeUntil (this.onDestroy$))
+        .subscribe (nodes => {
+            this.nodes = nodes;
+        });
     }
 
+    ngOnDestroy (): void {
+        this.onDestroy$.next (null);
+        this.onDestroy$.complete ();
+    }
 }

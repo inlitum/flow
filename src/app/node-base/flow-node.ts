@@ -1,6 +1,7 @@
 import { Position } from '../interfaces/position';
 
 export interface NodeConfig {
+    [keys: string]: any
 }
 
 export abstract class FlowNode {
