@@ -1,5 +1,5 @@
 <div class="flow">
-    <ng-container *ngFor="let node of nodes">
-        <flow-node [flowNode]="node"></flow-node>
+    <ng-container *ngFor="let node of nodes | keyvalue">
+        <flow-node [flowNode]="node.value"></flow-node>
     </ng-container>
 </div>

@@ -19,12 +19,11 @@ export class NodeFactoryService {
         try {
             node = new (<any>Nodes)[ nodeType ];
         } catch (e) {
-            console.log (`Error finding node [${nodeType}]. Setting node as an Undefined node.`)
+            // console.log (`Error finding node [${nodeType}]. Setting node as an Undefined node.`)
             // Set the return node as undefined, this node will show the
             //  config of the errored node.
             node = new (<any>Nodes)[ 'Undefined' ];
         }
-
         return node;
     }
 }

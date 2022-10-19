@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FlowNode }      from '../../node-base/flow-node';
-import { NodeWithExits } from '../../node-base/node-with-exits';
-import { NodeExit }      from '../../node-base/node-exit';
-import * as assert                  from 'assert';
+import { FlowNode }                 from '../../node-base/flow-node';
+import { NodeWithExits }            from '../../node-base/node-with-exits';
+import { NodeExit }                 from '../../node-base/node-exit';
 
 @Component ({
     selector: 'flow-node[flowNode]',
@@ -35,12 +34,12 @@ export class FlowNodeComponent implements OnInit {
     /**
      * Wrapper function that will only be run if the node extends NodeWithExits.
      */
-    public getNodeExits (): {[exitName: string]: NodeExit} {
+    public getNodeExits (): { [ exitName: string ]: NodeExit } {
         if (!this.hasExits) {
             return {};
         }
 
-        return (this.flowNode as NodeWithExits).getExits();
+        return (this.flowNode as NodeWithExits).getExits ();
     }
 
     constructor () {
@@ -50,7 +49,16 @@ export class FlowNodeComponent implements OnInit {
     }
 
     handleNodeClick (): void {
-        this._flowNode.setState ('selected');
+        let state: "normal" | "selected" | "errored" | "warning" | "modified" = 'normal';
+        switch (this._flowNode.getState()) {
+            case 'selected':
+                state = 'normal';
+                break;
+            case 'normal':
+                state = 'selected';
+                break;
+        }
+        this._flowNode.setState (state);
     }
 
 }

@@ -12,6 +12,7 @@ export abstract class NodeWithExits extends FlowNode {
      * to get the current total number of exits.
      */
     public abstract getExitNames (): string[];
+    public exitRule: 'showAll' | 'non-empty' | 'betweenFirstAndLast' | 'showAllIfOne' = 'showAll';
 
     // Overridable
     protected get exits (): { [ exitName: string ]: NodeExit } {

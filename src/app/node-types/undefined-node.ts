@@ -1,5 +1,6 @@
-import { NodeWithExits } from '../node-base/node-with-exits';
-import { NodeConfig }    from '../node-base/flow-node';
+import { NodeWithExits }    from '../node-base/node-with-exits';
+import { NodeConfig }       from '../node-base/flow-node';
+import { OperationsConfig } from '../services/flow-controller.service';
 
 /**
  * The undefined node is the default error node for when a node type is node
@@ -12,8 +13,19 @@ export class UndefinedNode extends NodeWithExits {
     // The config supplied to the node. This should remain untouched.
     private _rawConfig: NodeConfig | undefined = undefined;
 
-    setRawConfig (config: {[key: string]: any}) {
+    setRawConfig (config: OperationsConfig) {
         this._rawConfig = config;
+        // Set the name of the node so the user can tell that the
+        // node has been seen as undefined.
+        let name: string;
+        // If the name has a custom name, might as well use it.
+        if (config.name && config.name !== config.type) {
+            name = `Undefined - ${config.name}`;
+        } else {
+            name = `Undefined - ${config.type}`;
+        }
+        this.setCustomName(name);
+
     }
 
     getExitNames (): string[] {

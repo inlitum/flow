@@ -11,7 +11,7 @@
     <div class="flow-node-number">
         #{{flowNode.getNodeId()}}
     </div>
-    <div class="flow-node-note" *ngIf="flowNode.hasNodeNote() || hasExits"></div>
+    <div class="flow-node-note" *ngIf="flowNode.hasNodeNote()"></div>
 </div>
 <ng-container *ngIf="hasExits">
     <ng-container *ngFor="let nodeExit of getNodeExits() | keyvalue">

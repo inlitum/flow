@@ -5,11 +5,12 @@ import { Subject, takeUntil }           from 'rxjs';
 
 @Component ({
     selector: 'app-flow',
-    templateUrl: './flow.component.html'
+    templateUrl: './flow.component.html',
+    providers: [FlowControllerService]
 })
 export class FlowComponent implements OnInit, OnDestroy {
 
-    public nodes: FlowNode[] = [];
+    public nodes: { [ nodeId: number ]: FlowNode } = {};
 
     public onDestroy$: Subject<null> = new Subject<null> ();
 
@@ -22,11 +23,14 @@ export class FlowComponent implements OnInit, OnDestroy {
         this._flowController.flowNodes$
         .pipe (takeUntil (this.onDestroy$))
         .subscribe (nodes => {
+            console.log(nodes)
+
             this.nodes = nodes;
         });
     }
 
     ngOnDestroy (): void {
+        this._flowController.cleanUp();
         this.onDestroy$.next (null);
         this.onDestroy$.complete ();
     }

@@ -55,15 +55,15 @@ export abstract class FlowNode {
     }
 
     public hasNodeNote (): boolean {
-        return !!(this._nodeNote && this._nodeNote !== '');
+        return this._nodeNotes != null && this._nodeNotes.length > 0;
     }
 
-    public getNodeNote (): string {
-        return this._nodeNote;
+    public getNodeNotes (): string[] {
+        return this._nodeNotes ?? [];
     }
 
-    public setNodeNote (note: string) {
-        this._nodeNote = note;
+    public setNodeNote (notes: string[]) {
+        this._nodeNotes = notes;
     }
 
     public getPosition (): Position {
@@ -77,7 +77,7 @@ export abstract class FlowNode {
     /* +-=-=-=-=-=--=-=-=- Private -=-=-=-=-=--=-=-=-+ */
 
     private _nodeId: number     = -1;
-    private _nodeNote: string   = '';
+    private _nodeNotes: string[] | null = null;
     // Default
     private _position: Position = { x: 0, y: 0 };
 
