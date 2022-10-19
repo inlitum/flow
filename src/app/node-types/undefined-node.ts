@@ -13,6 +13,12 @@ export class UndefinedNode extends NodeWithExits {
     // The config supplied to the node. This should remain untouched.
     private _rawConfig: NodeConfig | undefined = undefined;
 
+    constructor () {
+        super ();
+
+        this.exitRule = "nonEmpty";
+    }
+
     setRawConfig (config: OperationsConfig) {
         this._rawConfig = config;
         // Set the name of the node so the user can tell that the

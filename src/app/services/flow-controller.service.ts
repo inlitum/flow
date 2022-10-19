@@ -7,7 +7,7 @@ import { NodeWithExits }            from '../node-base/node-with-exits';
 import { UndefinedNode }            from '../node-types/undefined-node';
 import { LinkNode }                 from '../node-types/link-node';
 import { Link }                     from '../node-types/nodes';
-import { clone }                    from 'lodash';
+import { cloneDeep }                    from 'lodash';
 
 export interface OperationsConfig {
     name: string,
@@ -65,7 +65,7 @@ export class FlowControllerService {
             return;
         }
 
-        this._flowConfig = clone (flow);
+        this._flowConfig = cloneDeep (flow);
 
         let startNode: OperationsConfig | null = null;
 
@@ -114,21 +114,25 @@ export class FlowControllerService {
             return;
         }
 
-        const exits = node.getExits();
+        const exits = node.getDisplayExits();
         const exitNames = Object.keys(exits);
+
+        if (node.getNodeId() === 13) {
+            console.log(exits);
+        }
 
         for (let exitIdx = 0; exitIdx < exitNames.length; exitIdx++) {
             const exitName  = exitNames[ exitIdx ];
             let exitNode    = exits[ exitName ].getExitNode();
             // Increment the y offset only if the exit node isn't on the same
             // level.
+            if (exitIdx !== 0) {
+                this.lastYOffset += this.nodeYOffset;
+            }
             if (!exitNode) {
                 continue;
             }
 
-            if (exitIdx !== 0) {
-                this.lastYOffset += this.nodeYOffset;
-            }
 
             this.setNodePosition (exitNode, depth + 1);
         }
