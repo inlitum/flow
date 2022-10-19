@@ -61,29 +61,28 @@ export class FlowControllerService {
     private lastYOffset: number = 0;
 
     parseFlow (flow: FlowConfig) {
-        if (!flow.operations) {
+        if (!flow || !flow.operations) {
             return;
         }
 
         this._flowConfig = clone (flow);
 
         let startNode: OperationsConfig | null = null;
-        let startNodeId: number                = -1;
 
-        this._operations  = flow.operations;
-        let ids: string[] = Object.keys (flow.operations);
+        this._operations = flow.operations;
+        let operationIds: string[] = Object.keys(flow.operations);
 
-        for (let sid of ids) {
-            const id = Number.parseInt (sid, 10);
+        // Get the start node.
+        for (let operationId of operationIds) {
+            const id = Number.parseInt(operationId, 10);
 
-            if (flow.operations[ id ].type === 'Start') {
-                startNode   = flow.operations[ id ];
-                startNodeId = id;
+            if (flow.operations[id].type === 'Start') {
+                startNode = flow.operations[id];
                 break;
             }
         }
 
-        if (!startNode || startNodeId === -1) {
+        if (!startNode) {
             return;
         }
 
@@ -92,6 +91,47 @@ export class FlowControllerService {
         // Once all nodes are parsed, render the flow.
         this.renderFlow ();
         this.flowNodes$.next(this._nodes);
+    }
+
+    renderFlow () {
+        if (!this._startNode) {
+            return;
+        }
+
+        this.setNodePosition(this._startNode);
+        this.flowNodes$.next(this._nodes)
+    }
+
+    setNodePosition (node: FlowNode, depth: number = 0) {
+        if (!node) {
+            return;
+        }
+
+        node.setPosition({x: depth * this.nodeXOffset, y: this.lastYOffset});
+        // If the node won't ever have exits, we can just return
+        // as the node just needs a position.
+        if (!(node instanceof NodeWithExits)) {
+            return;
+        }
+
+        const exits = node.getExits();
+        const exitNames = Object.keys(exits);
+
+        for (let exitIdx = 0; exitIdx < exitNames.length; exitIdx++) {
+            const exitName  = exitNames[ exitIdx ];
+            let exitNode    = exits[ exitName ].getExitNode();
+            // Increment the y offset only if the exit node isn't on the same
+            // level.
+            if (!exitNode) {
+                continue;
+            }
+
+            if (exitIdx !== 0) {
+                this.lastYOffset += this.nodeYOffset;
+            }
+
+            this.setNodePosition (exitNode, depth + 1);
+        }
     }
 
     /**
@@ -135,7 +175,7 @@ export class FlowControllerService {
                         if (exitOperation.seenNode != null) {
                             const linkNode = this._nodeFactory.generateNode ('Link');
                             if (!(linkNode instanceof LinkNode)) {
-                                console.error ('Error: Inable to load link node. THIS IS BAD!');
+                                console.error ('Error: Unable to load link node. THIS IS BAD!');
                                 continue;
                             }
 
@@ -191,48 +231,4 @@ export class FlowControllerService {
         this.lastYOffset = 0;
         this.renderFlow ();
     }
-
-    renderFlow () {
-        if (!this._startNode) {
-            return;
-        }
-
-        this.renderNode (this._startNode);
-        this.flowNodes$.next(this._nodes);
-    }
-
-    renderNode (node: FlowNode, depth: number = 0) {
-        node.setPosition ({ x: depth * this.nodeXOffset, y: this.lastYOffset });
-
-        if (!(node instanceof NodeWithExits)) {
-            return;
-        }
-
-        const exits     = node.getExits ();
-        const exitNames = Object.keys (exits);
-
-        for (let exitIdx = 0; exitIdx < exitNames.length; exitIdx++) {
-            const exitName = exitNames[ exitIdx ];
-            let exitNode   = exits[ exitName ].getExitNode ();
-
-            if (exitIdx !== 0) {
-                this.lastYOffset += this.nodeYOffset;
-            }
-
-            if (!exitNode) {
-                continue;
-            }
-
-            this.renderNode (exitNode, depth + 1);
-        }
-    }
-
-    // cleanUp() {
-    //     this._nodes      = {};
-    //     this._linkNodes  = [];
-    //     this._startNode  = null;
-    //     this.lastYOffset = 0;
-    //     this._currentId = 1;
-    //     this._flowConfig = null;
-    // }
 }

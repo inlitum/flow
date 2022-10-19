@@ -1,5 +1,9 @@
 import { FlowNode } from './flow-node';
 
+export type NodeExitMap = {
+    [exitName: string]: NodeExit
+}
+
 export class NodeExit {
 
     private _disabled: boolean         = false;
