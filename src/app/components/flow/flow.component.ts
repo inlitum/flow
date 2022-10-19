@@ -5,8 +5,7 @@ import { Subject, takeUntil }           from 'rxjs';
 
 @Component ({
     selector: 'app-flow',
-    templateUrl: './flow.component.html',
-    providers: [FlowControllerService]
+    templateUrl: './flow.component.html'
 })
 export class FlowComponent implements OnInit, OnDestroy {
 
@@ -30,7 +29,7 @@ export class FlowComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy (): void {
-        this._flowController.cleanUp();
+        // this._flowController.cleanUp();
         this.onDestroy$.next (null);
         this.onDestroy$.complete ();
     }

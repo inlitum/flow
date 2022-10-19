@@ -91,8 +91,7 @@ export class FlowControllerService {
 
         // Once all nodes are parsed, render the flow.
         this.renderFlow ();
-        console.log(this._nodes)
-        this.flowNodes$.next (this._nodes);
+        this.flowNodes$.next(this._nodes);
     }
 
     /**
@@ -199,6 +198,7 @@ export class FlowControllerService {
         }
 
         this.renderNode (this._startNode);
+        this.flowNodes$.next(this._nodes);
     }
 
     renderNode (node: FlowNode, depth: number = 0) {
@@ -227,12 +227,12 @@ export class FlowControllerService {
         }
     }
 
-    cleanUp() {
-        this._nodes      = {};
-        this._linkNodes  = [];
-        this._startNode  = null;
-        this.lastYOffset = 0;
-        this._currentId = 1;
-        this._flowConfig = null;
-    }
+    // cleanUp() {
+    //     this._nodes      = {};
+    //     this._linkNodes  = [];
+    //     this._startNode  = null;
+    //     this.lastYOffset = 0;
+    //     this._currentId = 1;
+    //     this._flowConfig = null;
+    // }
 }
