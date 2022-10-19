@@ -1,0 +1,19 @@
+<div class="flow-node" *ngIf="flowNode" [class]="flowNode.getState()" (click)="handleNodeClick()" [ngStyle]="{'left.px': flowNode.getPosition().x, 'top.px': flowNode.getPosition().y}">
+    <div class="content-wrapper">
+        <div class="flow-node-icon">
+            <mat-icon>{{flowNode.getNodeIcon()}}</mat-icon>
+
+        </div>
+        <div class="flow-node-name">
+            {{flowNode.getDisplayName()}}
+        </div>
+    </div>
+    <div class="flow-node-number">
+        #{{flowNode.getNodeId()}}
+    </div>
+    <div class="flow-node-note" *ngIf="flowNode.hasNodeNote() || hasExits"></div>
+</div>
+<ng-container *ngIf="hasExits">
+    <ng-container *ngFor="let nodeExit of getNodeExits() | keyvalue">
+    </ng-container>
+</ng-container>
