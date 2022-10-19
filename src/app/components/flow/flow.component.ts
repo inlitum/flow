@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FlowNode }                     from '../../node-base/flow-node';
-import { FlowService }                  from '../../services/flow.service';
+import { FlowControllerService }        from '../../services/flow-controller.service';
 import { Subject, takeUntil }           from 'rxjs';
 
 @Component ({
@@ -14,12 +14,12 @@ export class FlowComponent implements OnInit, OnDestroy {
     public onDestroy$: Subject<null> = new Subject<null> ();
 
     constructor (
-        private _flowService: FlowService
+        private _flowController: FlowControllerService
     ) {
     }
 
     ngOnInit (): void {
-        this._flowService.flowNodes$
+        this._flowController.flowNodes$
         .pipe (takeUntil (this.onDestroy$))
         .subscribe (nodes => {
             this.nodes = nodes;

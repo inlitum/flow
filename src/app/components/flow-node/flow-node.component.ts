@@ -32,6 +32,9 @@ export class FlowNodeComponent implements OnInit {
         }
     }
 
+    /**
+     * Wrapper function that will only be run if the node extends NodeWithExits.
+     */
     public getNodeExits (): {[exitName: string]: NodeExit} {
         if (!this.hasExits) {
             return {};
