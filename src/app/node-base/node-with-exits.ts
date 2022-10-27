@@ -59,13 +59,13 @@ export abstract class NodeWithExits extends FlowNode {
      */
     getDisplayExits (): NodeExitMap {
         switch (this.exitRule) {
-            case "nonEmpty":
+            case 'nonEmpty':
                 return this._getNonEmptyExits();
-            case "betweenFirstAndLast":
+            case 'betweenFirstAndLast':
                 return this._getBetweenFirstAndLastExits();
-            case "showAllIfOne":
+            case 'showAllIfOne':
                 return this._showAllExitsIfOneExists();
-            case "showAll":
+            case 'showAll':
             default:
                 return this.getExits();
         }

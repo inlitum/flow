@@ -1,0 +1,37 @@
+<div class="node-exit-container">
+    <!-- Main lines connecting nodes -->
+    <div class="exit-cross-wrapper">
+        <!-- Top line will show when the current node exit isn't the first exit -->
+        <div class="top-line {{ topLineState }}"></div>
+        <!-- Right line will always show -->
+        <div class="right-line {{ rightLineState }}"></div>
+        <!--
+         The bottom line will connect from the middle of the current node, to the top of the next node.
+         The height of the bottom line is calculated to be (exitWrapper's height - 26). Exit wrapper's is the total height of all the exits (and the exits' exits).
+        -->
+        <div class="bottom-line {{ bottomLineState }}" [style.height.px]="bottomLineHeight"></div>
+        <!-- Middle dot will always show, this dot is here to add a defined corner to the node. Previous FE versions don't have this dot and it shows. -->
+        <div class="middle-dot {{ middleDotState }}"></div>
+        <!-- Left line will only ever show when the node exit is the first node exit -->
+        <div class="left-line {{ leftLineState }}"></div>
+    </div>
+    <!-- This section is where the actual node exit, node exit info, node exit line and node are shown -->
+    <!-- The height of this section will determine the height of the bottom line connecting children -->
+    <div #exitWrapper class="exit">
+        <!-- A small blurb of text above the node exit. Adds context to some node exits.-->
+        <div class="node-exit-info" *ngIf="exitInfo">
+            {{exitInfo}}
+        </div>
+        <!-- A little bubble in the middle of nodes, this stores the first letter of the exit name. -->
+        <!-- If a callback function is defined for the node exit, then this is clickable -->
+        <div class="node-exit {{ exitClickable ? 'clickable' : '' }}" [style.background]="exitDisabled ? 'grey' : exitColor" (click)="nodeExitClicked()">
+            {{ exitName | firstLetterOnly }}
+        </div>
+        <!-- The exit line connecting the node exit with the node -->
+        <div *ngIf="node" class="exit-line {{ exitLineState }}"></div>
+        <!-- The next node :) -->
+        <div *ngIf="node" class="node">
+            <flow-node [flowNode]="node"></flow-node>
+        </div>
+    </div>
+</div>

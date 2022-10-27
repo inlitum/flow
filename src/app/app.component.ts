@@ -5702,12 +5702,4 @@ export class AppComponent implements OnInit{
     ngOnInit (): void {
         this._flowController.parseFlow(this.flow);
     }
-
-    rerender () {
-        this._flowController.rerenderFlow();
-    }
-
-    reload () {
-        this._flowController.reloadFlow();
-    }
 }

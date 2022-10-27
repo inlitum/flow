@@ -24,12 +24,10 @@ html, body {
     line-height: 1.42857143;
 }
 
-.flow {
-    margin: 0 1rem;
-    border: 1px solid black;
-    height: 100%;
-
-    position: relative;
-
-    overflow: scroll;
+hr {
+    border: none;
+    border-top: 1px solid #eee !important;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    width: 100%;
 }

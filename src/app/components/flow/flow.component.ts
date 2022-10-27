@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FlowNode }                     from '../../node-base/flow-node';
 import { FlowControllerService }        from '../../services/flow-controller.service';
 import { Subject, takeUntil }           from 'rxjs';
+import { FlowNode }                     from '../../node-base/flow-node';
 
 @Component ({
     selector: 'app-flow',
-    templateUrl: './flow.component.html'
+    templateUrl: './flow.component.html',
+    styleUrls: [ './flow.component.scss' ]
 })
 export class FlowComponent implements OnInit, OnDestroy {
 
-    public nodes: { [ nodeId: number ]: FlowNode } = {};
+    public startNode: FlowNode | null = null;
 
     public onDestroy$: Subject<null> = new Subject<null> ();
 
@@ -19,12 +20,10 @@ export class FlowComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit (): void {
-        this._flowController.flowNodes$
+        this._flowController.startNode$
         .pipe (takeUntil (this.onDestroy$))
-        .subscribe (nodes => {
-            console.log(nodes)
-
-            this.nodes = nodes;
+        .subscribe (startNode => {
+            this.startNode = startNode;
         });
     }
 

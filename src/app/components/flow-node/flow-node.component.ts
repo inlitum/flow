@@ -1,7 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FlowNode }                 from '../../node-base/flow-node';
-import { NodeWithExits }            from '../../node-base/node-with-exits';
-import { NodeExit }                 from '../../node-base/node-exit';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { FlowNode }                                                       from '../../node-base/flow-node';
+import { NodeWithExits }                                                  from '../../node-base/node-with-exits';
+import { NodeExit }                                                       from '../../node-base/node-exit';
+import { FlowControllerService }                                          from '../../services/flow-controller.service';
+import { UndefinedNode }                                                  from '../../node-types/undefined-node';
+import { KeyValue }                                                       from '@angular/common';
 
 @Component ({
     selector: 'flow-node[flowNode]',
@@ -11,8 +14,6 @@ import { NodeExit }                 from '../../node-base/node-exit';
 export class FlowNodeComponent implements OnInit {
 
     private _flowNode!: FlowNode;
-
-    public state: string = '';
 
     public hasExits: boolean = false;
 
@@ -24,12 +25,13 @@ export class FlowNodeComponent implements OnInit {
     public set flowNode (node: FlowNode) {
         this._flowNode = node;
 
-        this.state = this._flowNode.getState ();
-
         if (node instanceof NodeWithExits) {
             this.hasExits = true;
         }
     }
+
+    @Input()
+    isChild: boolean = false;
 
     /**
      * Wrapper function that will only be run if the node extends NodeWithExits.
@@ -39,26 +41,42 @@ export class FlowNodeComponent implements OnInit {
             return {};
         }
 
-        return (this.flowNode as NodeWithExits).getExits ();
+        return (this.flowNode as NodeWithExits).getExits ()
     }
 
-    constructor () {
+    public getPassThroughNodeIds (idx: number): number [] {
+        let output = [];
+
+        let exits = this.getNodeExits();
+        let exitNames = Object.keys(exits);
+
+        for (let exitIdx = idx; exitIdx < exitNames.length; exitIdx++) {
+            let exit = exits[exitNames[exitIdx]].getExitNode();
+
+            if (!exit) {
+                continue;
+            }
+
+            output.push(exit.getNodeId());
+        }
+
+        return output;
+    }
+
+    constructor (
+        private _flowController: FlowControllerService
+    ) {
     }
 
     ngOnInit (): void {
     }
 
     handleNodeClick (): void {
-        let state: "normal" | "selected" | "errored" | "warning" | "modified" = 'normal';
-        switch (this._flowNode.getState()) {
-            case 'selected':
-                state = 'normal';
-                break;
-            case 'normal':
-                state = 'selected';
-                break;
-        }
-        this._flowNode.setState (state);
+        this._flowController.selectNode(this._flowNode);
+    }
+
+    originalOrder = (a: KeyValue<string,NodeExit>, b: KeyValue<string,NodeExit>): number => {
+        return 0;
     }
 
 }

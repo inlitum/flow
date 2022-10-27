@@ -15,10 +15,12 @@ export abstract class FlowNode {
     public abstract storeToConfig (): NodeConfig;
 
     // Override-able
-
-    protected customName: string | null                                         = null;
-    protected canRename: boolean                                                = true;
-    protected state: 'normal' | 'selected' | 'errored' | 'warning' | 'modified' = 'normal';
+    protected customName: string | null = null;
+    protected canRename: boolean = true;
+    private _selected: boolean   = false;
+    private _errored: boolean    = false;
+    private _warning: boolean    = false;
+    private _modified: boolean   = false;
 
     public getNodeType (): string {
         return this.nodeType;
@@ -46,12 +48,24 @@ export abstract class FlowNode {
         this._nodeId = id;
     }
 
-    public setState (state: 'normal' | 'selected' | 'errored' | 'warning' | 'modified') {
-        this.state = state;
-    }
-
     public getState (): 'normal' | 'selected' | 'errored' | 'warning' | 'modified' {
-        return this.state;
+        if (this._selected) {
+            return 'selected';
+        }
+
+        if (this._errored) {
+            return 'errored';
+        }
+
+        if (this._warning) {
+            return 'errored';
+        }
+
+        if (this._modified) {
+            return 'modified';
+        }
+
+        return 'normal';
     }
 
     public hasNodeNote (): boolean {
@@ -66,19 +80,41 @@ export abstract class FlowNode {
         this._nodeNotes = notes;
     }
 
-    public getPosition (): Position {
-        return this._position;
+    public getSelected (): boolean {
+        return this._selected;
     }
 
-    public setPosition (pos: Position) {
-        this._position = pos;
+    public setSelected (value: boolean) {
+        this._selected = value;
+    }
+
+    public getErrored (): boolean {
+        return this._errored;
+    }
+
+    public setErrored (value: boolean) {
+        this._errored = value;
+    }
+
+    public getWarning (): boolean {
+        return this._warning;
+    }
+
+    public setWarning (value: boolean) {
+        this._warning = value;
+    }
+
+    public getModified (): boolean {
+        return this._modified;
+    }
+
+    public setModified (value: boolean) {
+        this._modified = value;
     }
 
     /* +-=-=-=-=-=--=-=-=- Private -=-=-=-=-=--=-=-=-+ */
 
     private _nodeId: number     = -1;
     private _nodeNotes: string[] | null = null;
-    // Default
-    private _position: Position = { x: 0, y: 0 };
 
 }

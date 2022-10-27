@@ -1,9 +1,10 @@
 <div class="app">
-    <div class="wrappe">
-        <button (click)="rerender()">rerender</button>
-        <button (click)="reload()">reload</button>
-    </div>
     <div class="inner">
-        <app-flow></app-flow>
+        <div class="flow">
+            <app-flow></app-flow>
+        </div>
+        <div class="sidebar">
+            <flow-sidebar></flow-sidebar>
+        </div>
     </div>
 </div>
