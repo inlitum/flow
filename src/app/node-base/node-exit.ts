@@ -54,7 +54,7 @@ export class NodeExit {
     }
 
     public setClickedCallback (callback: (exitName: string) => void) {
-        this._clickable = true;
+        this._clickable       = true;
         this._clickedCallback = callback;
 
         return this;

@@ -9,7 +9,7 @@ export class FirstLetterOnlyPipe implements PipeTransform {
             return value;
         }
 
-        if (isNaN(Number.parseInt(value, 10))) {
+        if (isNaN (Number.parseInt (value, 10))) {
             return value[ 0 ];
         }
 

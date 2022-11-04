@@ -12,7 +12,7 @@ export class StartNode extends NodeWithExits {
     }
 
     getExitNames (): string[] {
-        return ['Start'];
+        return [ 'Start' ];
     }
 
     initFromConfig (config: NodeConfig): void {

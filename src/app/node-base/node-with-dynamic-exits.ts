@@ -40,9 +40,9 @@ export abstract class NodeWithDynamicExits extends NodeWithExits {
             // If the exit names array doesn't match the total exits then it is a bug, most likely created by bad implementation of a node.
             return;
         }
-        const exitName = exitNames[ exitNames.length - 1 ];
+        const exitName         = exitNames[ exitNames.length - 1 ];
         // Add an empty exit to the end with the new name.
-        this.exits[ exitName ] = new NodeExit().setExitName(exitName);
+        this.exits[ exitName ] = new NodeExit ().setExitName (exitName);
     }
 
     public removeExit () {

@@ -1,28 +1,28 @@
 .flow-node-wrapper {
-    display: flex;
-    flex-direction: row;
+    display        : flex;
+    flex-direction : row;
 }
 
 .flow-node {
-    z-index: 2;
-    cursor: pointer;
-    position: relative;
+    z-index     : 2;
+    cursor      : pointer;
+    position    : relative;
 
-    height         : 36px;
-    width          : 160px;
+    height      : 36px;
+    width       : 160px;
 
-    border         : 1px solid grey;
+    border      : 1px solid grey;
 
-    display: inline-block;
+    display     : inline-block;
 
-    box-shadow     : 3px 3px 5px 1px rgba(0, 0, 0, 0.2);
+    box-shadow  : 3px 3px 5px 1px rgba(0, 0, 0, 0.2);
 
-    user-select: none;
+    user-select : none;
 }
 
 .content-wrapper {
-    display: flex;
-    align-items: center;
+    display     : flex;
+    align-items : center;
 }
 
 .flow-node-icon {
@@ -50,72 +50,72 @@
 }
 
 .flow-node-number {
-    position: absolute;
-    top: -1px;
-    right: -1px;
+    position     : absolute;
+    top          : -1px;
+    right        : -1px;
 
-    border-top: solid 1px grey;
-    border-right: solid 1px grey;
+    border-top   : solid 1px grey;
+    border-right : solid 1px grey;
 
-    background: #DDD;
-    z-index: 999;
+    background   : #DDD;
+    z-index      : 999;
 
-    text-align: center;
+    text-align   : center;
 
-    height: 18px;
-    width: 40px;
+    height       : 18px;
+    width        : 40px;
 
-    opacity: 0.4;
+    opacity      : 0.4;
 }
 
 .selected {
     -webkit-box-shadow : 0px 0px 1px 6px rgb(193, 91, 43, 0.9);
     box-shadow         : 0px 0px 1px 6px rgb(193, 91, 43, 0.9);
-    border-radius: 1px;
+    border-radius      : 1px;
 }
 
 .errored {
     -webkit-box-shadow : 0px 0px 1px 3px rgba(255, 0, 51, 0.9);
     box-shadow         : 0px 0px 1px 3px rgba(255, 0, 51, 0.9);
-    border-radius: 1px;
+    border-radius      : 1px;
 }
 
 .modified {
     -webkit-box-shadow : 0px 0px 1px 3px rgba(49, 112, 143, 0.7);
     box-shadow         : 0px 0px 1px 3px rgba(49, 112, 143, 0.7);
-    border-radius: 1px;
+    border-radius      : 1px;
 
 }
 
 .warning {
     -webkit-box-shadow : 0px 0px 1px 3px rgb(138, 109, 59);
     box-shadow         : 0px 0px 1px 3px rgb(138, 109, 59);
-    border-radius: 1px;
+    border-radius      : 1px;
 }
 
 .flow-node-note {
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin-left: -3px;
-    width: 3px;
-    height: 3px;
-    background: red;
+    position    : absolute;
+    right       : 0;
+    top         : 0;
+    margin-left : -3px;
+    width       : 3px;
+    height      : 3px;
+    background  : red;
 }
 
 .node-exits {
-    z-index: 1;
-    margin-top: -7px;
+    z-index        : 1;
+    margin-top     : -7px;
 
-    display: flex;
-    flex-direction: column;
+    display        : flex;
+    flex-direction : column;
 }
 
-.exit{
-    display: flex;
-    flex-direction: row;
+.exit {
+    display        : flex;
+    flex-direction : row;
 }
 
 .node-exit {
-    margin-top: 7px;
+    margin-top : 7px;
 }

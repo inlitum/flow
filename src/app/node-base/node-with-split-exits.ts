@@ -5,7 +5,6 @@ type GrowToSize<T, A extends Array<T>, N extends number> = { 0: A, 1: GrowToSize
 
 export type FixedArray<T, N extends number> = GrowToSize<T, [], N>;
 
-
 export abstract class NodeWithSplitExits extends NodeWithExits {
     /**
      *

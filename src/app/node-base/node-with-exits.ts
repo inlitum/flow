@@ -1,7 +1,6 @@
 import { FlowNode }              from './flow-node';
 import { NodeExit, NodeExitMap } from './node-exit';
 
-
 export abstract class NodeWithExits extends FlowNode {
 
     /**
@@ -13,6 +12,7 @@ export abstract class NodeWithExits extends FlowNode {
      * to get the current total number of exits.
      */
     public abstract getExitNames (): string[];
+
     public exitRule: 'showAll' | 'nonEmpty' | 'betweenFirstAndLast' | 'showAllIfOne' = 'showAll';
 
     // Overridable
@@ -23,7 +23,7 @@ export abstract class NodeWithExits extends FlowNode {
             let exitNames = this.getExitNames ();
 
             for (let exit of exitNames) {
-                this._exits[ exit ] = new NodeExit().setExitName(exit);
+                this._exits[ exit ] = new NodeExit ().setExitName (exit);
             }
         }
 
@@ -42,10 +42,10 @@ export abstract class NodeWithExits extends FlowNode {
             return;
         }
 
-        this.exits[ exitNames[ exit ] ].setExitNode(node);
+        this.exits[ exitNames[ exit ] ].setExitNode (node);
     }
 
-    public getExits(): {[exitName: string]: NodeExit} {
+    public getExits (): { [ exitName: string ]: NodeExit } {
         return this.exits;
     }
 
@@ -60,14 +60,14 @@ export abstract class NodeWithExits extends FlowNode {
     getDisplayExits (): NodeExitMap {
         switch (this.exitRule) {
             case 'nonEmpty':
-                return this._getNonEmptyExits();
+                return this._getNonEmptyExits ();
             case 'betweenFirstAndLast':
-                return this._getBetweenFirstAndLastExits();
+                return this._getBetweenFirstAndLastExits ();
             case 'showAllIfOne':
-                return this._showAllExitsIfOneExists();
+                return this._showAllExitsIfOneExists ();
             case 'showAll':
             default:
-                return this.getExits();
+                return this.getExits ();
         }
     }
 
@@ -80,15 +80,15 @@ export abstract class NodeWithExits extends FlowNode {
      * @private
      */
     private _getNonEmptyExits (): NodeExitMap {
-        let exits = this.getExits();
+        let exits                    = this.getExits ();
         let outputExits: NodeExitMap = {};
-        let exitNames = Object.keys(exits);
+        let exitNames                = Object.keys (exits);
 
         for (let exitName of exitNames) {
-            let exit = exits[exitName];
+            let exit = exits[ exitName ];
 
-            if (exit.getExitNode() != null) {
-                outputExits[exitName] = exit;
+            if (exit.getExitNode () != null) {
+                outputExits[ exitName ] = exit;
             }
         }
 
@@ -98,19 +98,19 @@ export abstract class NodeWithExits extends FlowNode {
     /**
      * All exits between the first non-null exit and the last will be returned. (null exits included)
      */
-    private _getBetweenFirstAndLastExits(): NodeExitMap {
-        let exits = this.getExits();
+    private _getBetweenFirstAndLastExits (): NodeExitMap {
+        let exits                    = this.getExits ();
         let outputExits: NodeExitMap = {};
-        let exitNames = Object.keys(exits);
+        let exitNames                = Object.keys (exits);
 
         let firstIdx = -1;
-        let lastIdx = -1;
+        let lastIdx  = -1;
 
         // Get the first non-null exit.
         for (let i = 0; i < exitNames.length; i++) {
-            let exit = exits[exitNames[i]];
+            let exit = exits[ exitNames[ i ] ];
 
-            if (exit.getExitNode() != null) {
+            if (exit.getExitNode () != null) {
                 firstIdx = i;
                 break;
             }
@@ -122,9 +122,9 @@ export abstract class NodeWithExits extends FlowNode {
 
         // Find the last non-null exit.
         for (let i = exitNames.length - 1; i >= firstIdx; i--) {
-            let exit = exits[exitNames[i]];
+            let exit = exits[ exitNames[ i ] ];
 
-            if (exit.getExitNode() != null) {
+            if (exit.getExitNode () != null) {
                 lastIdx = i;
                 break;
             }
@@ -132,8 +132,8 @@ export abstract class NodeWithExits extends FlowNode {
         // Since first exit is defined, it can be assumed that the first will either be a node after or the first node.
         for (let i = firstIdx; i <= lastIdx; i++) {
             // Add all nodes between the first and last idx (including first and last) to the output map.
-            let exitName = exitNames[i];
-            outputExits[exitName] = exits[exitName];
+            let exitName            = exitNames[ i ];
+            outputExits[ exitName ] = exits[ exitName ];
         }
 
         return outputExits;
@@ -144,12 +144,12 @@ export abstract class NodeWithExits extends FlowNode {
      * @private
      */
     private _showAllExitsIfOneExists (): NodeExitMap {
-        let exits = this.getExits();
-        let exitNames = Object.keys(exits);
+        let exits     = this.getExits ();
+        let exitNames = Object.keys (exits);
 
         for (let exitName of exitNames) {
-            let exit = exits[exitName];
-            if (exit.getExitNode() != null) {
+            let exit = exits[ exitName ];
+            if (exit.getExitNode () != null) {
                 return exits;
             }
         }

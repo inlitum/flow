@@ -1,6 +1,6 @@
 import { Injectable }               from '@angular/core';
 import { NodeFactoryService }       from './node-factory.service';
-import { FlowNode, NodeConfig }     from '../node-base/flow-node';
+import { FlowNode }                 from '../node-base/flow-node';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { NodeWithDynamicExits }     from '../node-base/node-with-dynamic-exits';
 import { NodeWithExits }            from '../node-base/node-with-exits';
@@ -8,7 +8,6 @@ import { UndefinedNode }            from '../node-types/undefined-node';
 import { LinkNode }                 from '../node-types/link-node';
 import { Link }                     from '../node-types/nodes';
 import { cloneDeep }                from 'lodash';
-import { StartNode }                from '../node-types/start-node';
 
 export interface OperationsConfig {
     name: string,
@@ -44,11 +43,11 @@ export class FlowControllerService {
     private _nodes: { [ nodeId: number ]: FlowNode } = {};
     private _flowConfig: FlowConfig | null           = null;
 
-    private _selectedNode: FlowNode | null = null;
+    private _selectedNode: FlowNode | null         = null;
     public selectedNode$: Subject<FlowNode | null> = new BehaviorSubject<FlowNode | null> (this._selectedNode);
 
-    private _linkNodes: LinkNode[] = [];
-    public startNode$: Subject<FlowNode | null> = new BehaviorSubject<FlowNode | null>(null);
+    private _linkNodes: LinkNode[]              = [];
+    public startNode$: Subject<FlowNode | null> = new BehaviorSubject<FlowNode | null> (null);
 
     constructor (
         private _nodeFactory: NodeFactoryService
@@ -67,15 +66,15 @@ export class FlowControllerService {
 
         let startNode: OperationsConfig | null = null;
 
-        this._operations = flow.operations;
-        let operationIds: string[] = Object.keys(flow.operations);
+        this._operations           = flow.operations;
+        let operationIds: string[] = Object.keys (flow.operations);
 
         // Get the start node.
         for (let operationId of operationIds) {
-            const id = Number.parseInt(operationId, 10);
+            const id = Number.parseInt (operationId, 10);
 
-            if (flow.operations[id].type === 'Start') {
-                startNode = flow.operations[id];
+            if (flow.operations[ id ].type === 'Start') {
+                startNode = flow.operations[ id ];
                 break;
             }
         }
@@ -135,7 +134,7 @@ export class FlowControllerService {
 
                             linkNode.setNodeId (this._currentId);
                             linkNode.setLinkedNodeId (exitId);
-                            this._linkNodes.push(linkNode);
+                            this._linkNodes.push (linkNode);
 
                             this._nodes[ this._currentId ] = linkNode;
 
@@ -169,11 +168,11 @@ export class FlowControllerService {
 
     selectNode (node: FlowNode | null) {
         if (this._selectedNode) {
-            this._selectedNode.setSelected(false);
+            this._selectedNode.setSelected (false);
         }
 
         this._selectedNode = node;
-        this._selectedNode?.setSelected(true);
-        this.selectedNode$.next(this._selectedNode);
+        this._selectedNode?.setSelected (true);
+        this.selectedNode$.next (this._selectedNode);
     }
 }

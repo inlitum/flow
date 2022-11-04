@@ -11,7 +11,7 @@ export class LinkNode extends FlowNode {
     }
 
     storeToConfig (): NodeConfig {
-        return { };
+        return {};
     }
 
     public setLinkedNodeId (nodeId: number) {

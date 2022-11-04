@@ -24,7 +24,8 @@
         </div>
         <!-- A little bubble in the middle of nodes, this stores the first letter of the exit name. -->
         <!-- If a callback function is defined for the node exit, then this is clickable -->
-        <div class="node-exit" [ngClass]="{clickable: exitClickable}" [style.background]="exitDisabled ? 'grey' : exitColor" (click)="nodeExitClicked()">
+        <div class="node-exit" [ngClass]="{clickable: exitClickable}"
+             [style.background]="exitDisabled ? 'grey' : exitColor" (click)="nodeExitClicked()">
             {{ exitName | firstLetterOnly }}
         </div>
         <!-- The exit line connecting the node exit with the node -->

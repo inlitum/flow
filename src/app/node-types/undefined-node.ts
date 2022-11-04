@@ -8,15 +8,15 @@ import { OperationsConfig } from '../services/flow-controller.service';
  */
 export class UndefinedNode extends NodeWithExits {
 
-    protected nodeIcon: string = 'question_mark';
-    protected nodeType: string = 'Undefined';
+    protected nodeIcon: string                 = 'question_mark';
+    protected nodeType: string                 = 'Undefined';
     // The config supplied to the node. This should remain untouched.
     private _rawConfig: NodeConfig | undefined = undefined;
 
     constructor () {
         super ();
 
-        this.exitRule = "nonEmpty";
+        this.exitRule = 'nonEmpty';
     }
 
     setRawConfig (config: OperationsConfig) {
@@ -30,20 +30,23 @@ export class UndefinedNode extends NodeWithExits {
         } else {
             name = `Undefined - ${config.type}`;
         }
-        this.setCustomName(name);
+        this.setCustomName (name);
 
     }
 
     getExitNames (): string[] {
-        if (!this._rawConfig || !this._rawConfig['exits']) {
-            return [ ];
+        if (!this._rawConfig || !this._rawConfig[ 'exits' ]) {
+            return [];
         }
         // Fetch the exit names from the raw config.
-        return Object.keys(this._rawConfig['exits']);
+        return Object.keys (this._rawConfig[ 'exits' ]);
     }
 
-    initFromConfig (config: NodeConfig): void {}
-    storeToConfig (): NodeConfig { return {}; }
+    initFromConfig (config: NodeConfig): void {
+    }
 
+    storeToConfig (): NodeConfig {
+        return {};
+    }
 
 }

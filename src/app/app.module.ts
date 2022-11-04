@@ -11,26 +11,26 @@ import { FirstLetterOnlyPipe }            from './pipes/first-letter-only.pipe';
 import { SidebarComponent }               from './components/sidebar/sidebar.component';
 import { MatTabsModule }                  from '@angular/material/tabs';
 
-@NgModule ( {
-                declarations: [
-                    AppComponent,
-                    FlowComponent,
-                    FlowNodeComponent,
-                    NodeExitComponent,
-                    FirstLetterOnlyPipe,
-                    SidebarComponent
-                ],
-                imports:      [
-                    BrowserModule,
-                    BrowserAnimationsModule,
-                    MatIconModule,
-                    MatTabsModule
-                ],
-                providers:    [],
-                bootstrap:    [ AppComponent ]
-            } )
+@NgModule ({
+    declarations: [
+        AppComponent,
+        FlowComponent,
+        FlowNodeComponent,
+        NodeExitComponent,
+        FirstLetterOnlyPipe,
+        SidebarComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatIconModule,
+        MatTabsModule
+    ],
+    providers: [],
+    bootstrap: [ AppComponent ]
+})
 export class AppModule {
-    constructor ( iconRegistry: MatIconRegistry ) {
-        iconRegistry.setDefaultFontSetClass ( 'material-icons' );
+    constructor (iconRegistry: MatIconRegistry) {
+        iconRegistry.setDefaultFontSetClass ('material-icons');
     }
 }

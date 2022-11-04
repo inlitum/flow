@@ -2,21 +2,24 @@
     <div class="flow-node" *ngIf="flowNode" [class]="flowNode.getState()" (click)="handleNodeClick($event)">
         <div class="content-wrapper">
             <div class="flow-node-icon">
-                <mat-icon>{{flowNode.getNodeIcon()}}</mat-icon>
+                <mat-icon>{{flowNode.getNodeIcon ()}}</mat-icon>
             </div>
             <div class="flow-node-name">
-                {{flowNode.getDisplayName()}}
+                {{flowNode.getDisplayName ()}}
             </div>
         </div>
         <div class="flow-node-number">
-            #{{flowNode.getNodeId()}}
+            #{{flowNode.getNodeId ()}}
         </div>
         <div class="flow-node-note" *ngIf="flowNode.hasNodeNote()"></div>
     </div>
     <ng-container *ngIf="hasExits">
         <div class="node-exits">
-            <ng-container *ngFor="let nodeExit of getNodeExits() | keyvalue: originalOrder; first as isFirst; last as isLast; index as idx">
-                <flow-node-exit [nodeExit]="nodeExit.value" [isFirst]="isFirst" [isLast]="isLast" [passThroughNodeIds]="getPassThroughNodeIds(idx)" [parentNodeId]="flowNode.getNodeId()"></flow-node-exit>
+            <ng-container
+                    *ngFor="let nodeExit of getNodeExits() | keyvalue: originalOrder; first as isFirst; last as isLast; index as idx">
+                <flow-node-exit [nodeExit]="nodeExit.value" [isFirst]="isFirst" [isLast]="isLast"
+                                [passThroughNodeIds]="getPassThroughNodeIds(idx)"
+                                [parentNodeId]="flowNode.getNodeId()"></flow-node-exit>
             </ng-container>
         </div>
     </ng-container>

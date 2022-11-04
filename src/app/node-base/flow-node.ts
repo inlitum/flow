@@ -1,7 +1,5 @@
-import { Position } from '../interfaces/position';
-
 export interface NodeConfig {
-    [keys: string]: any
+    [ keys: string ]: any;
 }
 
 export abstract class FlowNode {
@@ -16,11 +14,11 @@ export abstract class FlowNode {
 
     // Override-able
     protected customName: string | null = null;
-    protected canRename: boolean = true;
-    private _selected: boolean   = false;
-    private _errored: boolean    = false;
-    private _warning: boolean    = false;
-    private _modified: boolean   = false;
+    protected canRename: boolean        = true;
+    private _selected: boolean          = false;
+    private _errored: boolean           = false;
+    private _warning: boolean           = false;
+    private _modified: boolean          = false;
 
     public getNodeType (): string {
         return this.nodeType;
@@ -114,7 +112,7 @@ export abstract class FlowNode {
 
     /* +-=-=-=-=-=--=-=-=- Private -=-=-=-=-=--=-=-=-+ */
 
-    private _nodeId: number     = -1;
+    private _nodeId: number             = -1;
     private _nodeNotes: string[] | null = null;
 
 }
