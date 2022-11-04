@@ -1,5 +1,5 @@
 <div class="flow-node-wrapper">
-    <div class="flow-node" *ngIf="flowNode" [class]="flowNode.getState()" (click)="handleNodeClick()">
+    <div class="flow-node" *ngIf="flowNode" [class]="flowNode.getState()" (click)="handleNodeClick($event)">
         <div class="content-wrapper">
             <div class="flow-node-icon">
                 <mat-icon>{{flowNode.getNodeIcon()}}</mat-icon>

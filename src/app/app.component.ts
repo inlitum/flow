@@ -1,4 +1,4 @@
-import { Component, OnInit }                 from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FlowConfig, FlowControllerService } from './services/flow-controller.service';
 
 @Component ({
@@ -5696,10 +5696,52 @@ export class AppComponent implements OnInit{
         "version" : 1
     };
 
+    @ViewChild('flow')
+    private flowElement!: ElementRef;
+
     constructor (private _flowController: FlowControllerService) {
     }
 
     ngOnInit (): void {
         this._flowController.parseFlow(this.flow);
+    }
+
+    public mouseDown: boolean = false;
+
+    handleMouseDown () {
+        this.mouseDown = true;
+    }
+
+    handleMouseUp () {
+        this.mouseDown = false;
+        this.lastMouseX = null;
+        this.lastMouseY = null;
+    }
+
+    private lastMouseY: number | null = null;
+    private lastMouseX: number | null = null;
+
+    handleMouseMove (event: MouseEvent) {
+        if (!this.mouseDown) {
+            return;
+        }
+
+        let currentMouseX = event.x;
+        let currentMouseY = event.y;
+
+        if (!this.lastMouseY || !this.lastMouseX) {
+            this.lastMouseX = currentMouseX;
+            this.lastMouseY = currentMouseY;
+            return;
+        }
+
+        let xDiff = currentMouseX - this.lastMouseX;
+        let yDiff = currentMouseY - this.lastMouseY;
+
+        this.flowElement.nativeElement.scrollTop -= yDiff;
+        this.flowElement.nativeElement.scrollLeft -= xDiff;
+
+        this.lastMouseX = currentMouseX;
+        this.lastMouseY = currentMouseY;
     }
 }

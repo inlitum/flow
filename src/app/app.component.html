@@ -1,6 +1,10 @@
 <div class="app">
     <div class="inner">
-        <div class="flow">
+        <div #flow class="flow"
+            (mouseup)="handleMouseUp()"
+            (mousedown)="handleMouseDown()"
+            (mousemove)="handleMouseMove($event)"
+            [style.cursor]="mouseDown ? 'grabbing': 'grab'">
             <app-flow></app-flow>
         </div>
         <div class="sidebar">

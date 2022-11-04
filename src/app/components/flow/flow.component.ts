@@ -3,11 +3,11 @@ import { FlowControllerService }        from '../../services/flow-controller.ser
 import { Subject, takeUntil }           from 'rxjs';
 import { FlowNode }                     from '../../node-base/flow-node';
 
-@Component ({
-    selector: 'app-flow',
-    templateUrl: './flow.component.html',
-    styleUrls: [ './flow.component.scss' ]
-})
+@Component ( {
+                 selector:    'app-flow',
+                 templateUrl: './flow.component.html',
+                 styleUrls:   [ './flow.component.scss' ]
+             } )
 export class FlowComponent implements OnInit, OnDestroy {
 
     public startNode: FlowNode | null = null;
@@ -21,15 +21,14 @@ export class FlowComponent implements OnInit, OnDestroy {
 
     ngOnInit (): void {
         this._flowController.startNode$
-        .pipe (takeUntil (this.onDestroy$))
-        .subscribe (startNode => {
-            this.startNode = startNode;
-        });
+            .pipe ( takeUntil ( this.onDestroy$ ) )
+            .subscribe ( startNode => {
+                this.startNode = startNode;
+            } );
     }
 
     ngOnDestroy (): void {
-        // this._flowController.cleanUp();
-        this.onDestroy$.next (null);
+        this.onDestroy$.next ( null );
         this.onDestroy$.complete ();
     }
 }

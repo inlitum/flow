@@ -51,7 +51,7 @@ export class FlowNodeComponent implements OnInit {
         let exitNames = Object.keys(exits);
 
         for (let exitIdx = idx; exitIdx < exitNames.length; exitIdx++) {
-            let exit = exits[exitNames[exitIdx]].getExitNode();
+            let exit = exits[exitNames[exitIdx]].getExitNode ();
 
             if (!exit) {
                 continue;
@@ -71,11 +71,11 @@ export class FlowNodeComponent implements OnInit {
     ngOnInit (): void {
     }
 
-    handleNodeClick (): void {
+    handleNodeClick (event: MouseEvent): void {
         this._flowController.selectNode(this._flowNode);
     }
 
-    originalOrder = (a: KeyValue<string,NodeExit>, b: KeyValue<string,NodeExit>): number => {
+    originalOrder = (): number => {
         return 0;
     }
 
