@@ -1,0 +1,26 @@
+<div class="node-exits">
+    <div class="node-exit" *ngFor="let exit of node.getDisplayExits() | keyvalue">
+        <div class="exit-name">
+            {{ exit.key }}
+        </div>
+        <mat-icon>
+            arrow_forward
+        </mat-icon>
+        <div class="exit-node" *ngIf="exit.value.getExitNode() !== null">
+            <button class="drag-area sidebar-clickable">
+                <mat-icon class="node-exit-icon">more_vert</mat-icon>
+            </button>
+            <button class="node-exit-name" (click)="handleExitNameClick(exit.value.getExitNode())">
+                {{ exit.value.getExitNode()?.getDisplayName() }}
+            </button>
+            <button class="node-exit-edit sidebar-clickable">
+                <mat-icon class="node-exit-icon">
+                    edit
+                </mat-icon>
+            </button>
+        </div>
+        <button class="empty-exit-node exit-node sidebar-clickable" *ngIf="!exit.value.getExitNode()">
+            <mat-icon class="node-exit-icon">add</mat-icon>
+        </button>
+    </div>
+</div>

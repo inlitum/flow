@@ -16,22 +16,97 @@
 }
 
 .node-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width      : 100%;
     padding    : 0.5em 1em 0.5em 1em;
     background : #333333;
+}
+
+.node-id {
+    color      : #c0c0c0;
+    padding-right: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.node-name {
     color      : #D2691E;
-    width      : 100%;
-    height     : 50px;
+}
+
+.node-header {
     font-size  : 16px;
 }
 
+.node-option {
+    padding: 1rem;
+}
+
+.node-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 1rem;
+
+    button {
+        background: #eeeeee;
+        border: #bbbbbb solid 1px;
+        padding: 0.2rem;
+    }
+
+    button:hover {
+        background: rgba(0,0,0,0.1);
+    }
+
+    button:active {
+        background: rgba(0,0,0,0.2);
+    }
+}
+
+.node-note {
+    padding-top: 1rem;
+    width: 100%;
+
+    textarea {
+        color: gray;
+        background: #feff9c;
+        border: #fff62e solid 3px;
+        border-radius: 5px;
+        padding: 5px;
+        width: 100%;
+        min-height: 32px;
+        max-height: 200px;
+    }
+}
+
+.node-body {
+    height: 80px;
+}
+
+.no-config {
+    color: #333;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flat-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2px;
+}
+
 .node-exits-header {
-    user-select      : none;
-    padding          : 0.5em 1em 0.5em 1em;
-    font-size        : 16px;
-    background-color : #333333;
-    color            : #D2691E;
+    font-size  : 16px;
 }
 
 .sidebar-container {
     border-left : 2px solid #B5B4AA;
+}
+
+hr {
+    margin: 0;
 }

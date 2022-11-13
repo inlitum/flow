@@ -1,21 +1,43 @@
 <div class="sidebar-container">
     <mat-tab-group>
         <mat-tab label="Node Properties">
-            <div class="node-properties">
-                <div class="node-title">
-                    {{selectedNode ? selectedNode.getDisplayName () : ''}}
+            <div class="node-properties" *ngIf="selectedNode">
+                <div class="node-title node-header">
+                    <div class="node-id">
+                        #{{selectedNode.getNodeId ()}}
+                    </div>
+                    <div class="node-name">
+                        {{selectedNode.getDisplayName ()}}
+                    </div>
                 </div>
                 <div class="node-option">
-                    find and delete node.
-                    notes
+                    <div class="node-actions">
+                        <button class="flat-button" (click)="handleFocusClicked()">
+                            <mat-icon>search</mat-icon>
+                            Find Node
+                        </button>
+                        <button class="flat-button">
+                            <mat-icon>delete</mat-icon>
+                            Delete Node
+                        </button>
+                    </div>
+                    <div class="node-note">
+                        <textarea placeholder="Click to add note..." [value]="selectedNode.getNodeNotes()">
+                        </textarea>
+                    </div>
                 </div>
                 <hr>
                 <div class="node-body">
-                    node specific content
+                    <div class="no-config">
+                        No Configuration Parameters Available of this Node.
+                    </div>
                 </div>
-                <div class="node-exits">
-                    <div class="node-exits-header">
-                        Node Exits
+                <div class="node-exit-container">
+                    <div class="node-title node-exits-header">
+                        <div class="node-name">Node Exits</div>
+                    </div>
+                    <div class="node-exits-wrapper">
+                        <flow-sidebar-node-exits *ngIf="nodeWithExits" [node]="nodeWithExits"></flow-sidebar-node-exits>
                     </div>
                 </div>
             </div>

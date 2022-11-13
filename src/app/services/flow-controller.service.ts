@@ -8,6 +8,7 @@ import { UndefinedNode }            from '../node-types/undefined-node';
 import { LinkNode }                 from '../node-types/link-node';
 import { Link }                     from '../node-types/nodes';
 import { cloneDeep }                from 'lodash';
+import { FlowNodeComponent }        from '../components/flow-node/flow-node.component';
 
 export interface OperationsConfig {
     name: string,
@@ -38,16 +39,20 @@ export interface FlowConfig {
     providedIn: 'root'
 })
 export class FlowControllerService {
-
-    private _startNode: FlowNode | null              = null;
-    private _nodes: { [ nodeId: number ]: FlowNode } = {};
-    private _flowConfig: FlowConfig | null           = null;
+    private _startNode: FlowNode | null                               = null;
+    // Internal map of all the nodes.
+    private _nodes: { [ nodeId: number ]: FlowNode }                  = {};
+    // A map of the rendered flow node components.
+    public _nodeComponents: { [ nodeId: number ]: FlowNodeComponent } = {};
+    private _flowConfig: FlowConfig | null                            = null;
 
     private _selectedNode: FlowNode | null         = null;
     public selectedNode$: Subject<FlowNode | null> = new BehaviorSubject<FlowNode | null> (this._selectedNode);
 
     private _linkNodes: LinkNode[]              = [];
     public startNode$: Subject<FlowNode | null> = new BehaviorSubject<FlowNode | null> (null);
+    // Event for when the focus needs to be updated (this scrolling)
+    public focusChanged$: Subject<{ top: number, left: number }> = new BehaviorSubject ({ top: 0, left: 0 });
 
     constructor (
         private _nodeFactory: NodeFactoryService
@@ -84,6 +89,7 @@ export class FlowControllerService {
         }
 
         this._startNode = this.parseNode (startNode);
+        this.selectNode (this._startNode);
         this.startNode$.next (this._startNode);
     }
 
@@ -144,8 +150,9 @@ export class FlowControllerService {
                             // Set the current operation to being seen, this will
                             // stop some recursion overflows.
                             exitOperation.seenNode = true;
-                            // Finally recursively parse the exit operation/
-                            exit                   = this.parseNode (exitOperation);
+
+                            // Finally recursively parse the exit operation
+                            exit = this.parseNode (exitOperation);
                         }
                     }
                 }
@@ -166,6 +173,27 @@ export class FlowControllerService {
         return newNode;
     }
 
+    /**
+     * Will store the node component in a map using the node's id as a key.
+     * @param nodeId
+     * @param nodeComponent
+     */
+    registerFlowNodeComponent (nodeId: number, nodeComponent: FlowNodeComponent) {
+        this._nodeComponents[ nodeId ] = nodeComponent;
+    }
+
+    /**
+     * Removes a node component from the internal map
+     * @param nodeId The node's id, used as the key in the map.
+     */
+    unregisterFlowNodeComponent (nodeId: number) {
+        if (!this._nodeComponents[ nodeId ]) {
+            return;
+        }
+
+        delete this._nodeComponents[ nodeId ];
+    }
+
     selectNode (node: FlowNode | null) {
         if (this._selectedNode) {
             this._selectedNode.setSelected (false);
@@ -174,5 +202,35 @@ export class FlowControllerService {
         this._selectedNode = node;
         this._selectedNode?.setSelected (true);
         this.selectedNode$.next (this._selectedNode);
+    }
+
+    /**
+     * Returns the node component linked to a node id.
+     * @param nodeId
+     */
+    getNodeComponentFromId (nodeId: number): FlowNodeComponent | null {
+        return this._nodeComponents[ nodeId ] ?? null;
+    }
+
+    /**
+     * Centers on the node provided.
+     * @param node
+     */
+    focusOnNode (node: FlowNode) {
+        let nodeId = node.getNodeId ();
+
+        if (!this._nodeComponents[ nodeId ]) {
+            console.error (`No node component found for ID [${nodeId}].`);
+            return;
+        }
+
+        let nodeComponent: FlowNodeComponent = this._nodeComponents[ nodeId ];
+
+        let diff = nodeComponent.nodeWrapper.nativeElement.getBoundingClientRect ();
+
+        let topDiff  = diff.top;
+        let leftDiff = diff.left;
+
+        this.focusChanged$.next ({ top: topDiff, left: leftDiff });
     }
 }

@@ -10,6 +10,7 @@ import { NodeExitComponent }              from './components/node-exit/node-exit
 import { FirstLetterOnlyPipe }            from './pipes/first-letter-only.pipe';
 import { SidebarComponent }               from './components/sidebar/sidebar.component';
 import { MatTabsModule }                  from '@angular/material/tabs';
+import { SidebarNodeExitsComponent }      from './components/sidebar-node-exits/sidebar-node-exits.component';
 
 @NgModule ({
     declarations: [
@@ -18,7 +19,8 @@ import { MatTabsModule }                  from '@angular/material/tabs';
         FlowNodeComponent,
         NodeExitComponent,
         FirstLetterOnlyPipe,
-        SidebarComponent
+        SidebarComponent,
+        SidebarNodeExitsComponent
     ],
     imports: [
         BrowserModule,

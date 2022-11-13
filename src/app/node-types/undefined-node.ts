@@ -15,8 +15,6 @@ export class UndefinedNode extends NodeWithExits {
 
     constructor () {
         super ();
-
-        this.exitRule = 'nonEmpty';
     }
 
     setRawConfig (config: OperationsConfig) {
@@ -39,7 +37,11 @@ export class UndefinedNode extends NodeWithExits {
             return [];
         }
         // Fetch the exit names from the raw config.
-        return Object.keys (this._rawConfig[ 'exits' ]);
+        return Object.keys (this._rawConfig[ 'exits' ]).map(e => {
+            // Exits are zero indexed in the array, make it one-indexed.
+            let n: number = Number.parseInt(e, 10);
+            return (n + 1).toString();
+        });
     }
 
     initFromConfig (config: NodeConfig): void {

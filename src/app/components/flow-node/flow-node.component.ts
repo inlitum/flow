@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FlowNode }                 from '../../node-base/flow-node';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FlowNode }                                                   from '../../node-base/flow-node';
 import { NodeWithExits }            from '../../node-base/node-with-exits';
 import { NodeExit }                 from '../../node-base/node-exit';
 import { FlowControllerService }    from '../../services/flow-controller.service';
@@ -9,7 +9,7 @@ import { FlowControllerService }    from '../../services/flow-controller.service
     templateUrl: './flow-node.component.html',
     styleUrls: [ './flow-node.component.scss' ]
 })
-export class FlowNodeComponent implements OnInit {
+export class FlowNodeComponent implements OnInit, OnDestroy {
 
     private _flowNode!: FlowNode;
 
@@ -18,6 +18,9 @@ export class FlowNodeComponent implements OnInit {
     public get flowNode (): FlowNode {
         return this._flowNode;
     }
+
+    @ViewChild('nodeWrapper')
+    public nodeWrapper!: ElementRef;
 
     @Input ()
     public set flowNode (node: FlowNode) {
@@ -39,7 +42,7 @@ export class FlowNodeComponent implements OnInit {
             return {};
         }
 
-        return (this.flowNode as NodeWithExits).getExits ();
+        return (this.flowNode as NodeWithExits).getDisplayExits ();
     }
 
     public getPassThroughNodeIds (idx: number): number [] {
@@ -67,6 +70,11 @@ export class FlowNodeComponent implements OnInit {
     }
 
     ngOnInit (): void {
+        this._flowController.registerFlowNodeComponent(this._flowNode.getNodeId(), this)
+    }
+
+    ngOnDestroy () {
+        this._flowController.unregisterFlowNodeComponent(this._flowNode.getNodeId())
     }
 
     handleNodeClick (event: MouseEvent): void {

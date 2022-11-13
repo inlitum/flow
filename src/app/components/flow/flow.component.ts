@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FlowControllerService }        from '../../services/flow-controller.service';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { FlowControllerService }                       from '../../services/flow-controller.service';
 import { Subject, takeUntil }           from 'rxjs';
 import { FlowNode }                     from '../../node-base/flow-node';
 
@@ -8,7 +8,7 @@ import { FlowNode }                     from '../../node-base/flow-node';
     templateUrl: './flow.component.html',
     styleUrls: [ './flow.component.scss' ]
 })
-export class FlowComponent implements OnInit, OnDestroy {
+export class FlowComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public startNode: FlowNode | null = null;
 
@@ -30,5 +30,12 @@ export class FlowComponent implements OnInit, OnDestroy {
     ngOnDestroy (): void {
         this.onDestroy$.next (null);
         this.onDestroy$.complete ();
+    }
+
+    ngAfterViewInit (): void {
+        if (this.startNode) {
+            // After the whole flow is rendered, focus on the start node.
+            this._flowController.focusOnNode(this.startNode);
+        }
     }
 }
