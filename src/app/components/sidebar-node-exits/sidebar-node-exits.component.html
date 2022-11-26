@@ -1,5 +1,5 @@
 <div class="node-exits">
-    <div class="node-exit" *ngFor="let exit of node.getDisplayExits() | keyvalue">
+    <div *ngFor="let exit of node.getDisplayExits() | keyvalue: originalOrder" class="node-exit">
         <div class="exit-name">
             {{ exit.key }}
         </div>

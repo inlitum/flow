@@ -25,8 +25,11 @@ export class SidebarNodeExitsComponent implements OnInit {
         if (!node) {
             return;
         }
-        this._flowController.selectNode(node);
-        this._flowController.focusOnNode(node);
+        this._flowController.selectNode (node);
+        this._flowController.focusOnNode (node);
     }
 
+    originalOrder = (): number => {
+        return 0;
+    };
 }
