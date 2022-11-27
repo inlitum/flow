@@ -17,7 +17,7 @@ export class LinkNode extends FlowNode {
     public setLinkedNodeId (nodeId: number) {
         this._linkedNodeId = nodeId;
 
-        this.setCustomName (`Link to ${this._linkedNodeId}`);
+        this.setCustomName (`Linked to node #${this._linkedNodeId}`);
     }
 
     getLinkedNodeId (): number | null {
