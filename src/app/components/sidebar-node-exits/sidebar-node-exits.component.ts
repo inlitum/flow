@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NodeWithExits }            from '../../node-base/node-with-exits';
 import { FlowNode }                 from '../../node-base/flow-node';
 import { FlowControllerService }    from '../../services/flow-controller.service';
+import { OriginalOrder }            from '../../utils/utils';
 
 @Component ({
     selector: 'flow-sidebar-node-exits[node]',
@@ -9,6 +10,7 @@ import { FlowControllerService }    from '../../services/flow-controller.service
     styleUrls: [ './sidebar-node-exits.component.scss' ]
 })
 export class SidebarNodeExitsComponent implements OnInit {
+    public originalOrder = OriginalOrder;
 
     @Input()
     public node!: NodeWithExits;
@@ -28,8 +30,4 @@ export class SidebarNodeExitsComponent implements OnInit {
         this._flowController.selectNode (node);
         this._flowController.focusOnNode (node);
     }
-
-    originalOrder = (): number => {
-        return 0;
-    };
 }

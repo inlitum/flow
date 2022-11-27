@@ -7,10 +7,10 @@ export class LinkNode extends FlowNode {
 
     private _linkedNodeId: number | null = null;
 
-    initFromConfig (config: NodeConfig): void {
+    public override initFromConfig (config: NodeConfig): void {
     }
 
-    storeToConfig (): NodeConfig {
+    public storeToConfig (): NodeConfig {
         return {};
     }
 
@@ -20,7 +20,7 @@ export class LinkNode extends FlowNode {
         this.setCustomName (`Linked to node #${this._linkedNodeId}`);
     }
 
-    getLinkedNodeId (): number | null {
+    public getLinkedNodeId (): number | null {
         return this._linkedNodeId;
     }
 

@@ -1748,7 +1748,8 @@ export const TEST_FLOW: FlowConfig = {
             'id': 200,
             'base_node': '1',
             'notes': [
-                'test'
+                'test',
+                'test2'
             ],
             'exits': [
                 199

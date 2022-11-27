@@ -17,7 +17,7 @@ export class UndefinedNode extends NodeWithExits {
         super ();
     }
 
-    setRawConfig (config: OperationsConfig) {
+    public setRawConfig (config: OperationsConfig) {
         this._rawConfig = config;
         // Set the name of the node so the user can tell that the
         // node has been seen as undefined.
@@ -32,22 +32,22 @@ export class UndefinedNode extends NodeWithExits {
 
     }
 
-    getExitNames (): string[] {
+    public getExitNames (): string[] {
         if (!this._rawConfig || !this._rawConfig[ 'exits' ]) {
             return [];
         }
         // Fetch the exit names from the raw config.
-        return Object.keys (this._rawConfig[ 'exits' ]).map(e => {
+        return Object.keys (this._rawConfig[ 'exits' ]).map (e => {
             // Exits are zero indexed in the array, make it one-indexed.
-            let n: number = Number.parseInt(e, 10);
-            return (n + 1).toString();
+            let n: number = Number.parseInt (e, 10);
+            return (n + 1).toString ();
         });
     }
 
-    initFromConfig (config: NodeConfig): void {
+    public override initFromConfig (config: NodeConfig): void {
     }
 
-    storeToConfig (): NodeConfig {
+    public storeToConfig (): NodeConfig {
         return {};
     }
 

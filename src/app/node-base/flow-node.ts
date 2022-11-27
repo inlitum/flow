@@ -1,3 +1,6 @@
+import { OperationsConfig } from '../services/flow-controller.service';
+import { isEqual }          from 'lodash';
+
 export interface NodeConfig {
     [ keys: string ]: any;
 }
@@ -8,17 +11,22 @@ export abstract class FlowNode {
     protected abstract nodeType: string;
     protected abstract nodeIcon: string;
 
-    public abstract initFromConfig (config: NodeConfig): void;
+    // Override-able
+    protected customName: string | null = null;
 
     public abstract storeToConfig (): NodeConfig;
 
-    // Override-able
-    protected customName: string | null = null;
-    protected canRename: boolean        = true;
-    private _selected: boolean          = false;
-    private _errored: boolean           = false;
-    private _warning: boolean           = false;
-    private _modified: boolean          = false;
+    protected canRename: boolean                     = true;
+    private _selected: boolean                       = false;
+    private _errored: boolean                        = false;
+    private _warning: boolean                        = false;
+    private _modified: boolean                       = false;
+    // Flag used when the node has been created this session and hasn't yet been saved.
+    private _newNode: boolean                        = false;
+    private _originalConfig: OperationsConfig | null = null;
+
+    public initFromConfig (config: NodeConfig): void {
+    }
 
     public getNodeType (): string {
         return this.nodeType;
@@ -29,8 +37,17 @@ export abstract class FlowNode {
     }
 
     public setCustomName (name: string) {
-        if (this.canRename) {
-            this.customName = name;
+        if (!this.canRename) {
+            return;
+        }
+
+        this.customName = name;
+
+        const originalConfig = this.getOriginalConfig ();
+        if (originalConfig && originalConfig.name !== name) {
+            this.setModified (true);
+        } else {
+            this.setModified (false);
         }
     }
 
@@ -75,7 +92,14 @@ export abstract class FlowNode {
     }
 
     public setNodeNote (notes: string[]) {
-        this._nodeNotes = notes;
+        this._nodeNotes      = notes;
+        // Fetch the original config, using the wrapper function as to allow better finding.
+        const originalConfig = this.getOriginalConfig ();
+        if (originalConfig && !isEqual (originalConfig.notes, notes)) {
+            this.setModified (true);
+        } else {
+            this.setModified (false);
+        }
     }
 
     public getSelected (): boolean {
@@ -108,6 +132,26 @@ export abstract class FlowNode {
 
     public setModified (value: boolean) {
         this._modified = value;
+    }
+
+    public setIsNewNode (value: boolean) {
+        this._newNode = value;
+
+        if (this._newNode === true) {
+            this._modified = true;
+        }
+    }
+
+    public getIsNewNode (): boolean {
+        return this._newNode;
+    }
+
+    public getOriginalConfig (): OperationsConfig | null {
+        return this._originalConfig;
+    }
+
+    public setOriginalConfig (value: OperationsConfig) {
+        this._originalConfig = value;
     }
 
     /* +-=-=-=-=-=--=-=-=- Private -=-=-=-=-=--=-=-=-+ */

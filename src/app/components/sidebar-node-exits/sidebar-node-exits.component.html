@@ -1,8 +1,8 @@
 <div class="node-exits">
     <div *ngFor="let exit of node.getDisplayExits() | keyvalue: originalOrder" class="node-exit">
-        <div class="exit-name">
-            {{ exit.key }}
-        </div>
+        <!-- The name of the exit -->
+        <div class="exit-name">{{ exit.key }}</div>
+        <!-- Arrow icon pointing towards the node. -->
         <mat-icon>
             arrow_forward
         </mat-icon>
@@ -10,15 +10,14 @@
             <button class="drag-area sidebar-clickable">
                 <mat-icon class="node-exit-icon">more_vert</mat-icon>
             </button>
-            <button class="node-exit-name" (click)="handleExitNameClick(exit.value.getExitNode())">
-                {{ exit.value.getExitNode()?.getDisplayName() }}
-            </button>
+            <button (click)="handleExitNameClick(exit.value.getExitNode())" class="node-exit-name">{{ exit.value.getExitNode ()?.getDisplayName () }}</button>
             <button class="node-exit-edit sidebar-clickable">
                 <mat-icon class="node-exit-icon">
                     edit
                 </mat-icon>
             </button>
         </div>
+        <!-- Display an empty exit button, used to allow for more exits to be added. -->
         <button class="empty-exit-node exit-node sidebar-clickable" *ngIf="!exit.value.getExitNode()">
             <mat-icon class="node-exit-icon">add</mat-icon>
         </button>

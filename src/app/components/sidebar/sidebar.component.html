@@ -22,14 +22,14 @@
                         </button>
                     </div>
                     <div class="node-note">
-                        <textarea placeholder="Click to add note..." [value]="selectedNode.getNodeNotes()">
+                        <textarea #note [value]="selectedNode.getNodeNotes()" placeholder="Click to add note...">
                         </textarea>
                     </div>
                 </div>
                 <hr>
                 <div class="node-body">
                     <div class="no-config">
-                        No Configuration Parameters Available of this Node.
+                        No Configuration Parameters Available for this Node.
                     </div>
                 </div>
                 <div class="node-exit-container">

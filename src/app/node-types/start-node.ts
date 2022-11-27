@@ -11,14 +11,14 @@ export class StartNode extends NodeWithExits {
         this.canRename = false;
     }
 
-    getExitNames (): string[] {
+    public getExitNames (): string[] {
         return [ 'Start' ];
     }
 
-    initFromConfig (config: NodeConfig): void {
+    public override initFromConfig (config: NodeConfig): void {
     }
 
-    storeToConfig (): NodeConfig {
+    public storeToConfig (): NodeConfig {
         return {};
     }
 

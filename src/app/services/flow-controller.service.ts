@@ -6,7 +6,7 @@ import { NodeWithDynamicExits }     from '../node-base/node-with-dynamic-exits';
 import { NodeWithExits }            from '../node-base/node-with-exits';
 import { UndefinedNode }            from '../node-types/undefined-node';
 import { LinkNode }                 from '../node-types/link-node';
-import { cloneDeep }                from 'lodash';
+import { cloneDeep as _cloneDeep }  from 'lodash';
 import { FlowNodeComponent }        from '../components/flow-node/flow-node.component';
 
 export interface OperationsConfig {
@@ -48,8 +48,8 @@ export class FlowControllerService {
     private _selectedNode: FlowNode | null         = null;
     public selectedNode$: Subject<FlowNode | null> = new BehaviorSubject<FlowNode | null> (this._selectedNode);
 
-    private _linkNodes: LinkNode[]              = [];
-    public startNode$: Subject<FlowNode | null> = new BehaviorSubject<FlowNode | null> (null);
+    public startNode$: Subject<FlowNode | null>                  = new BehaviorSubject<FlowNode | null> (null);
+    private _linkNodes: LinkNode[]                               = [];
     // Event for when the focus needs to be updated (this scrolling)
     public focusChanged$: Subject<{ top: number, left: number }> = new BehaviorSubject ({ top: 0, left: 0 });
 
@@ -66,7 +66,7 @@ export class FlowControllerService {
             return;
         }
 
-        this._flowConfig = cloneDeep (flow);
+        this._flowConfig = _cloneDeep (flow);
 
         let startNode: OperationsConfig | null = null;
 
@@ -160,6 +160,7 @@ export class FlowControllerService {
         }
         // Set the ID of the current node
         newNode.setNodeId (this._currentId);
+        newNode.setOriginalConfig (_cloneDeep (nodeConfig));
         // Add the node to the flow's node array.
         this._nodes[ this._currentId ] = newNode;
 

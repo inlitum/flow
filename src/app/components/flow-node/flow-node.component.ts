@@ -1,8 +1,9 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FlowNode }                                                   from '../../node-base/flow-node';
-import { NodeWithExits }            from '../../node-base/node-with-exits';
-import { NodeExit }                 from '../../node-base/node-exit';
-import { FlowControllerService }    from '../../services/flow-controller.service';
+import { NodeWithExits }                                              from '../../node-base/node-with-exits';
+import { NodeExit }                                                   from '../../node-base/node-exit';
+import { FlowControllerService }                                      from '../../services/flow-controller.service';
+import { OriginalOrder }                                              from '../../utils/utils';
 
 @Component ({
     selector: 'flow-node[flowNode]',
@@ -14,6 +15,7 @@ export class FlowNodeComponent implements OnInit, OnDestroy {
     private _flowNode!: FlowNode;
 
     public hasExits: boolean = false;
+    public originalOrder     = OriginalOrder;
 
     public get flowNode (): FlowNode {
         return this._flowNode;
@@ -77,12 +79,7 @@ export class FlowNodeComponent implements OnInit, OnDestroy {
         this._flowController.unregisterFlowNodeComponent(this._flowNode.getNodeId())
     }
 
-    handleNodeClick (event: MouseEvent): void {
+    handleNodeClick (): void {
         this._flowController.selectNode (this._flowNode);
     }
-
-    originalOrder = (): number => {
-        return 0;
-    };
-
 }
